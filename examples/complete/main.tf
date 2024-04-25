@@ -172,6 +172,9 @@ module "scp_management" {
   providers = {
     aws = aws.org_mgmt_euc1
   }
+  depends_on = [
+    module.create_provisioner    
+  ]
 }
 
 
