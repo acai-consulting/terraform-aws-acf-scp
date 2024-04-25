@@ -1,6 +1,7 @@
 package test
 
 import (
+	"os/exec"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -8,6 +9,13 @@ import (
 )
 
 func TestIdC(t *testing.T) {
+	t.Log("Ensuring boto3 is installed...")
+	cmd := exec.Command("bash", "-c", "pip3 show boto3 || pip3 install boto3")
+	err := cmd.Run()
+	if err != nil {
+		t.Fatalf("Failed to ensure boto3 is installed: %v", err)
+	}
+
 	t.Log("Starting ACF AWS IcD Module test")
 
 	terraformDir := "../examples/complete"
