@@ -84,7 +84,7 @@ locals {
     }
   }
 
-/*
+  /*
 Demo OU-Structure
 /root
 /root/SCP_CoreAccounts
@@ -137,9 +137,9 @@ module "scp_statements" {
 module "scp_management" {
   source = "../../"
 
-  scp_statements = module.scp_statements.scp_statements
+  scp_statements     = module.scp_statements.scp_statements
   scp_specifications = local.scp_specifications
-  scp_assignments= local.scp_assignments
+  scp_assignments    = local.scp_assignments
   providers = {
     aws = aws.org_mgmt
   }
