@@ -34,7 +34,7 @@ locals {
       "module_source"   = "github.com/acai-consulting/terraform-aws-acf-scp",
       "module_version"  = /*inject_version_start*/ "1.0.2" /*inject_version_end*/
     }
-  ) 
+  )
 
   root_ou_id = data.aws_organizations_organization.organization.roots[0].id
 }
@@ -65,13 +65,13 @@ resource "aws_organizations_policy" "scp_policies" {
 
   name        = each.value.policy_name
   description = each.value.description
-  content = jsonencode(jsondecode(data.aws_iam_policy_document.scp_policies[each.key].json))
-  tags = merge(local.module_tags, each.value.tags)
+  content     = jsonencode(jsondecode(data.aws_iam_policy_document.scp_policies[each.key].json))
+  tags        = merge(local.module_tags, each.value.tags)
 }
 
 # Attach to Organizational Units
 resource "aws_organizations_policy_attachment" "ou_attachment" {
-  for_each =  merge([
+  for_each = merge([
     for ou_id, ou_info in local.ou_paths_with_id : {
       for scp_name in ou_info.scps : "${ou_info.path} <- ${scp_name}" => {
         "ou_id"    = ou_id,
@@ -89,7 +89,7 @@ resource "aws_organizations_policy_attachment" "account_attachment" {
   for_each = merge([
     for acct_id, scps in var.scp_assignments.account_assignments : {
       for scp_name in scps : "${acct_id} <- ${scp_name}" => {
-        "acct_id"    = acct_id,
+        "acct_id"  = acct_id,
         "scp_name" = scp_name
       }
     }

@@ -7,12 +7,12 @@ locals {
       name = "CICD"
     },
     {
-      name    = "Prod"
+      name = "Prod"
     },
     {
       name = "NonProd"
     }
-  ]  
+  ]
   organizational_units = {
     level1_units : [
       # Sample "real-life" Org Structure
@@ -55,7 +55,7 @@ locals {
 }
 
 module "ou_structure" {
-  source = "git::https://github.com/acai-consulting/terraform-aws-acf-org-ou-mgmt?ref=main"
+  source               = "git::https://github.com/acai-consulting/terraform-aws-acf-org-ou-mgmt?ref=main"
   organizational_units = local.organizational_units
   providers = {
     aws = aws.org_mgmt

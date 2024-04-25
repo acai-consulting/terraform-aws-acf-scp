@@ -116,5 +116,5 @@ data "aws_iam_policy_document" "allow_services2" {
         "prod-ozonys2hmmpeu"                    # Anthropic's Claude 3 Haiku (Amazon Bedrock Edition)
       ]
     }
-  }  
+  }
 }
