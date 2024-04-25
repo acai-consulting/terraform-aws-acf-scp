@@ -7,5 +7,11 @@ output "ou_paths_with_id" {
 }
 
 output "scp_policies_details" {
-  value = aws_organizations_policy.scp_policies
+  value =  {
+    for key, policy in aws_organizations_policy.scp_policies : key => {
+      name          = policy.name
+      scp_id        = policy.id
+      policy_length = length(policy.content)
+    }
+  }
 }
