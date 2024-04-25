@@ -15,10 +15,36 @@ terraform {
 
 
 # ---------------------------------------------------------------------------------------------------------------------
+# ¦ CREATE PROVISIONER
+# ---------------------------------------------------------------------------------------------------------------------
+module "create_provisioner" {
+  source = "../../cicd-principals/terraform"
+
+  iam_role_settings = {
+    name = "cicd_provisioner"
+    aws_trustee_arns = [
+      "arn:aws:iam::471112796356:root",
+      "arn:aws:iam::471112796356:user/tfc_provisioner"
+    ]
+  }
+  providers = {
+    aws = aws.org_mgmt
+  }
+}
+
+provider "aws" {
+  region = "eu-central-1"
+  alias  = "org_mgmt_euc1"
+  assume_role {
+    role_arn = module.create_provisioner.iam_role_arn
+  }
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
 # ¦ DATA
 # ---------------------------------------------------------------------------------------------------------------------
-data "aws_region" "current" { provider = aws.org_mgmt }
-data "aws_caller_identity" "current" { provider = aws.org_mgmt }
+data "aws_region" "current" { provider = aws.org_mgmt_euc1 }
+data "aws_caller_identity" "current" { provider = aws.org_mgmt_euc1 }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ¦ LOCALS
@@ -116,8 +142,8 @@ Demo OU-Structure
       "/root/SCP_WorkloadAccounts/BusinessUnit_1" = ["workload_class1"]
       "/root/SCP_WorkloadAccounts/BusinessUnit_2" = ["workload_class1"]
       "/root/SCP_WorkloadAccounts/BusinessUnit_3" = ["workload_class2"]
-      "/root/SCP_WorkloadAccounts/*/NonProd"      = ["workload_prod"]
-      "/root/SCP_WorkloadAccounts/*/Prod"         = ["workload_non_prod"]
+      "/root/SCP_WorkloadAccounts/*/Prod"         = ["workload_prod"]
+      "/root/SCP_WorkloadAccounts/*/NonProd"      = ["workload_non_prod"]
     }
     account_assignments = {
       "590183833356" = ["deny_vpc"] # core_logging
@@ -141,7 +167,7 @@ module "scp_management" {
   scp_specifications = local.scp_specifications
   scp_assignments    = local.scp_assignments
   providers = {
-    aws = aws.org_mgmt
+    aws = aws.org_mgmt_euc1
   }
 }
 

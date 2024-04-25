@@ -63,7 +63,7 @@ resource "aws_organizations_policy" "scp_policies" {
 resource "aws_organizations_policy_attachment" "ou_attachment" {
   for_each =  merge([
     for ou_id, ou_info in local.ou_paths_with_id : {
-      for scp_name in ou_info.scps : "${ou_id}-${scp_name}" => {
+      for scp_name in ou_info.scps : "${ou_info.path} <- ${scp_name}" => {
         "ou_id"    = ou_id,
         "scp_name" = scp_name
       }
@@ -78,7 +78,7 @@ resource "aws_organizations_policy_attachment" "ou_attachment" {
 resource "aws_organizations_policy_attachment" "account_attachment" {
   for_each = merge([
     for acct_id, scps in var.scp_assignments.account_assignments : {
-      for scp_name in scps : "${acct_id}-${scp_name}" => {
+      for scp_name in scps : "${acct_id} <- ${scp_name}" => {
         "acct_id"    = acct_id,
         "scp_name" = scp_name
       }

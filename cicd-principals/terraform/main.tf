@@ -48,23 +48,25 @@ data "aws_iam_policy_document" "permissions" {
   statement {
     effect = "Allow"
     actions = [
+      "organizations:TagResource",
+      "organizations:UntagResource"
+    ]
+    resources = ["arn:aws:organizations::*:policy/*/service_control_policy/p-*"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
       "organizations:DescribeOrganization",
       "organizations:ListRoots",
-      "organizations:ListParents",
       "organizations:ListOrganizationalUnitsForParent",
-      "organizations:ListAccounts",
-      "organizations:ListAccountsForParent",
-      "organizations:ListAWSServiceAccessForOrganization",
-      "organizations:DescribeOrganizationalUnit",
-      "organizations:CreateOrganizationalUnit",
-      "organizations:UpdateOrganizationalUnit",
-      "organizations:DeleteOrganizationalUnit",
+      "organizations:DescribePolicy",
+      "organizations:CreatePolicy",
+      "organizations:UpdatePolicy",
+      "organizations:DeletePolicy",
       "organizations:AttachPolicy",
       "organizations:DetachPolicy",
-      "organizations:DescribePolicy",
-      "organizations:ListTargetsForPolicy",
-      "organizations:ListTagsForResource",
-      "organizations:TagResource",
+      "organizations:ListPolicies",
+      "organizations:ListPoliciesForTarget",
     ]
     resources = ["*"]
   }
