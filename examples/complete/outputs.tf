@@ -16,13 +16,13 @@ output "scp_management" {
 output "test_success" {
   description = "test_success"
   value = (
-    contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root-top_level") &&
-    contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root/SCP_SCP_CoreAccounts <- core_accounts") &&
+    contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root <- top_level") &&
+    contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root/SCP_CoreAccounts <- core_accounts") &&
     contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root/SCP_WorkloadAccounts <- workload") &&
     contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root/SCP_WorkloadAccounts/BusinessUnit_1 <- workload_class1") &&
     contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root/SCP_WorkloadAccounts/BusinessUnit_1/Prod <- workload_prod") &&
     contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root/SCP_WorkloadAccounts/BusinessUnit_2/NonProd <- workload_non_prod") &&
-    contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root/SCP_WorkloadAccounts/BusinessUnit_2/NonProdProd-workload_non_prod") &&
+    contains(keys(module.scp_management.aws_organizations_policy_ou_attachment), "/root/SCP_WorkloadAccounts/BusinessUnit_3/NonProd <- workload_non_prod") &&
     contains(keys(module.scp_management.aws_organizations_policy_account_attachment), "590183833356 <- deny_vpc")
   )
 }

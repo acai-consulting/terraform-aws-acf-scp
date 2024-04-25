@@ -57,16 +57,13 @@ data "aws_iam_policy_document" "permissions" {
     effect = "Allow"
     actions = [
       "organizations:DescribeOrganization",
-      "organizations:ListRoots",
-      "organizations:ListOrganizationalUnitsForParent",
+      "organizations:List*",
       "organizations:DescribePolicy",
       "organizations:CreatePolicy",
       "organizations:UpdatePolicy",
       "organizations:DeletePolicy",
       "organizations:AttachPolicy",
       "organizations:DetachPolicy",
-      "organizations:ListPolicies",
-      "organizations:ListPoliciesForTarget",
     ]
     resources = ["*"]
   }

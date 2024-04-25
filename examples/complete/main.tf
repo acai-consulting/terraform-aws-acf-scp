@@ -57,6 +57,9 @@ locals {
       statement_ids = [
         "deny_root_user"
       ]
+      tags = {
+        "priority" : "high"
+      }
     }
     "core_accounts" = {
       policy_name = "core_accounts"
