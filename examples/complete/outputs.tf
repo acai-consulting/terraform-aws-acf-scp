@@ -7,8 +7,8 @@ output "ou_structure_paths" {
   value = module.ou_structure.organizational_units_paths_ids
 }
 
-output "ou_structure_paths" {
-  value = module.ou_structure.organizational_units_paths_ids
+output "scp_management" {
+  value = module.scp_management
 }
 
 
