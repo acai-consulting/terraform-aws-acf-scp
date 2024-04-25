@@ -151,6 +151,7 @@ module "scp_management" {
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.47 |
+| <a name="provider_external"></a> [external](#provider\_external) | n/a |
 
 ## Modules
 
@@ -160,35 +161,32 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_ssoadmin_account_assignment.scp_groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_account_assignment) | resource |
-| [aws_ssoadmin_account_assignment.scp_users](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_account_assignment) | resource |
-| [aws_ssoadmin_customer_managed_policy_attachment.scp_ps_customer_managed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_customer_managed_policy_attachment) | resource |
-| [aws_ssoadmin_managed_policy_attachment.scp_ps_aws_managed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_managed_policy_attachment) | resource |
-| [aws_ssoadmin_permission_set.scp_ps](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permission_set) | resource |
-| [aws_ssoadmin_permission_set_inline_policy.scp_inline](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permission_set_inline_policy) | resource |
-| [aws_ssoadmin_permissions_boundary_attachment.scp_boundary_aws_managed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permissions_boundary_attachment) | resource |
-| [aws_ssoadmin_permissions_boundary_attachment.scp_boundary_customer_managed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permissions_boundary_attachment) | resource |
-| [aws_identitystore_group.scp_groups](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/identitystore_group) | data source |
-| [aws_identitystore_user.scp_users](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/identitystore_user) | data source |
-| [aws_ssoadmin_instances.scp_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssoadmin_instances) | data source |
+| [aws_organizations_policy.scp_policies](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_policy) | resource |
+| [aws_organizations_policy_attachment.account_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_policy_attachment) | resource |
+| [aws_organizations_policy_attachment.ou_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_policy_attachment) | resource |
+| [aws_iam_policy_document.scp_policies](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_organizations_organization.organization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
+| [aws_organizations_organizational_units.organization_inits](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organizational_units) | data source |
+| [external_external.get_ou_ids](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_assignments"></a> [account\_assignments](#input\_account\_assignments) | A list of account assignments. | <pre>list(object({<br>    account_id = string,<br>    permissions = list(object({<br>      permission_set_name = string<br>      users               = optional(list(string), [])<br>      groups              = optional(list(string), [])<br>    }))<br>  }))</pre> | `[]` | no |
-| <a name="input_permission_sets"></a> [permission\_sets](#input\_permission\_sets) | A list of AWS Identity Center Permission Sets. | <pre>list(object({<br>    name                      = string<br>    description               = optional(string, "not provided")<br>    session_duration_in_hours = optional(number, 4)<br>    relay_state               = optional(string, null)<br>    managed_policies = optional(list(object({<br>      managed_by  = string<br>      policy_name = string<br>      policy_path = optional(string, "/")<br>    })), [])<br>    inline_policy_json = optional(string, "")<br>    boundary_policies = optional(list(object({<br>      managed_by  = string<br>      policy_name = string<br>      policy_path = optional(string, "/")<br>    })), [])<br>  }))</pre> | `[]` | no |
-| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | A map of tags to assign to the resources in this module. | `map(string)` | `{}` | no |
+| <a name="input_scp_specifications"></a> [scp\_specifications](#input\_scp\_specifications) | The statements of the SCPs. | <pre>map(object({<br>    policy_name : string<br>    description : optional(string, null)<br>    statement_ids : list(string)<br>    tags : optional(map(string), {})<br>  }))</pre> | n/a | yes |
+| <a name="input_scp_statements"></a> [scp\_statements](#input\_scp\_statements) | The statements of the SCPs. | `map(string)` | n/a | yes |
+| <a name="input_default_tags"></a> [default\_tags](#input\_default\_tags) | A map of default tags to assign to the SCPs. | `map(string)` | `{}` | no |
+| <a name="input_scp_assignments"></a> [scp\_assignments](#input\_scp\_assignments) | The assignements of SCPs. | <pre>object({<br>    ou_assignments : map(list(string))      # key: ou-path, value: list of scp_ids to be assinged<br>    account_assignments : map(list(string)) # key: account_id, value: list of scp_ids to be assinged<br>  })</pre> | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_group_assignments"></a> [group\_assignments](#output\_group\_assignments) | Map of group assignments with Single Sign-On. |
-| <a name="output_identity_store_arn"></a> [identity\_store\_arn](#output\_identity\_store\_arn) | The Amazon Resource Name (ARN) of the SSO Instance. |
-| <a name="output_identity_store_id"></a> [identity\_store\_id](#output\_identity\_store\_id) | Identity Store ID associated with the Single Sign-On Instance. |
-| <a name="output_permission_sets"></a> [permission\_sets](#output\_permission\_sets) | Map of permission sets configured to be used with Single Sign-On. |
-| <a name="output_user_assignments"></a> [user\_assignments](#output\_user\_assignments) | Map of user assignments with Single Sign-On. |
+| <a name="output_aws_organizations_policy_account_attachment"></a> [aws\_organizations\_policy\_account\_attachment](#output\_aws\_organizations\_policy\_account\_attachment) | n/a |
+| <a name="output_aws_organizations_policy_ou_attachment"></a> [aws\_organizations\_policy\_ou\_attachment](#output\_aws\_organizations\_policy\_ou\_attachment) | n/a |
+| <a name="output_ou_paths_with_id"></a> [ou\_paths\_with\_id](#output\_ou\_paths\_with\_id) | n/a |
+| <a name="output_ou_root_id"></a> [ou\_root\_id](#output\_ou\_root\_id) | n/a |
+| <a name="output_scp_policies_details"></a> [scp\_policies\_details](#output\_scp\_policies\_details) | n/a |
 <!-- END_TF_DOCS -->
 
 <!-- AUTHORS -->
