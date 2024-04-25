@@ -14,7 +14,7 @@
 [![Latest Release][release-shield]][release-url]
 
 <!-- DESCRIPTION -->
-[Terraform][terraform-url] module to deploy provision and assign Service Control Policies (SCPs).
+[Terraform][terraform-url] module to provision and assign Service Control Policies (SCPs).
 
 
 <!-- FEATURES -->
@@ -22,6 +22,8 @@
 Will provision SCPs based on specified statements.
 
 For the following demo OU-Structure:
+
+```
 /root
 /root/SCP_CoreAccounts
 /root/SCP_CoreAccounts/Connectivity
@@ -41,6 +43,7 @@ For the following demo OU-Structure:
 /root/SCP_WorkloadAccounts/BusinessUnit_3/CICD
 /root/SCP_WorkloadAccounts/BusinessUnit_3/NonProd
 /root/SCP_WorkloadAccounts/BusinessUnit_3/Prod
+```
 
 ```hcl
 locals {

@@ -19,6 +19,7 @@ func TestIdC(t *testing.T) {
 		Lock:         true,
 		Targets: []string{
 			"module.create_provisioner",
+			"module.ou_structure",
 		},
 	}
 	defer terraform.Destroy(t, terraformPreparation)
