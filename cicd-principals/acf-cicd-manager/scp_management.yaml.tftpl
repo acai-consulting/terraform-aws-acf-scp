@@ -25,21 +25,17 @@ $${resource_tags_block}
             Statement:
               - Effect: Allow
                 Action:
+                  - "organizations:TagResource"
+                  - "organizations:UntagResource"
+                Resource: "arn:aws:organizations::*:policy/*/service_control_policy/p-*"
+              - Effect: Allow
+                Action:
                   - "organizations:DescribeOrganization"
-                  - "organizations:ListRoots"
-                  - "organizations:ListParents"
-                  - "organizations:ListOrganizationalUnitsForParent"
-                  - "organizations:ListAccounts"
-                  - "organizations:ListAccountsForParent"
-                  - "organizations:ListAWSServiceAccessForOrganization"
-                  - "organizations:DescribeOrganizationalUnit"
-                  - "organizations:CreateOrganizationalUnit"
-                  - "organizations:UpdateOrganizationalUnit"
-                  - "organizations:DeleteOrganizationalUnit"
+                  - "organizations:List*"
+                  - "organizations:DescribePolicy"
+                  - "organizations:CreatePolicy"
+                  - "organizations:UpdatePolicy"
+                  - "organizations:DeletePolicy"
                   - "organizations:AttachPolicy"
                   - "organizations:DetachPolicy"
-                  - "organizations:DescribePolicy"
-                  - "organizations:ListTargetsForPolicy"
-                  - "organizations:ListTagsForResource"
-                  - "organizations:TagResource"
                 Resource: "*"
