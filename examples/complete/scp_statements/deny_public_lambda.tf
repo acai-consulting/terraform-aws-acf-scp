@@ -17,5 +17,5 @@ data "aws_iam_policy_document" "deny_public_lambda" {
         "NONE"
       ]
     }
-  }  
+  }
 }
