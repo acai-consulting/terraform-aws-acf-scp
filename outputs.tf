@@ -1,4 +1,3 @@
-output "account_id" {
-  description = "account_id"
-  value       = data.aws_caller_identity.this.account_id
+output "ou_paths_with_id" {
+  value = local.ou_paths_with_id
 }
