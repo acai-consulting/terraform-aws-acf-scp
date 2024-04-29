@@ -62,10 +62,10 @@ def _get_ous(boto3_client, parent_ou_id, remaining_ou_path, recent_ou_path = "/r
 
 external_root_ou_id = sys.argv[1] 
 ou_assignments = json.loads(sys.argv[2])
-org_mgmt_role_arn = sys.argv[3]
 
-if org_mgmt_role_arn != "":
-    session = _assume_remote_role(org_mgmt_role_arn)
+# org_mgmt_role_arn provided?
+if len(sys.argv) > 2:  
+    session = _assume_remote_role(sys.argv[3])
     boto3_client = session.client('organizations')
 
 else:

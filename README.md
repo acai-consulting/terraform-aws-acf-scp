@@ -16,18 +16,19 @@
 <!-- DESCRIPTION -->
 [Terraform][terraform-url] module to provision and assign Service Control Policies (SCPs).
 
-
 <!-- FEATURES -->
 ## Note
+
 Must have Python3 and boto3 installed at the worker.
 
 ## Features
+
 Will provision SCPs based on specified statements.
 Supports wildcards in OU-Paths.
 
 For the following demo OU-Structure:
 
-```
+``` text
 /root
 /root/SCP_CoreAccounts
 /root/SCP_CoreAccounts/Connectivity
