@@ -25,8 +25,8 @@ variable "scp_assignments" {
 
 variable "org_mgmt_role_arn" {
   description = "ARN to be assumed by the Python."
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "default_tags" {
