@@ -64,7 +64,7 @@ external_root_ou_id = sys.argv[1]
 ou_assignments = json.loads(sys.argv[2])
 
 # org_mgmt_role_arn provided?
-if len(sys.argv) > 2:  
+if len(sys.argv) > 3:  
     session = _assume_remote_role(sys.argv[3])
     boto3_client = session.client('organizations')
 
