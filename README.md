@@ -23,6 +23,7 @@ Must have Python3 and boto3 installed at the worker.
 
 ## Features
 Will provision SCPs based on specified statements.
+Supports wildcards in OU-Paths.
 
 For the following demo OU-Structure:
 

@@ -44,7 +44,7 @@ locals {
 # ¦ DATA
 # ---------------------------------------------------------------------------------------------------------------------
 data "external" "get_ou_ids" {
-  program = ["python3", "${path.module}/python/get_ou_ids.py", local.root_ou_id, jsonencode(var.scp_assignments.ou_assignments)]
+  program = ["python3", "${path.module}/python/get_ou_ids.py", local.root_ou_id, jsonencode(var.scp_assignments.ou_assignments), var.org_mgmt_role_arn]
 }
 
 locals {
