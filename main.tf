@@ -32,7 +32,7 @@ locals {
       "module_provider" = "ACAI GmbH",
       "module_name"     = "terraform-aws-acf-scp",
       "module_source"   = "github.com/acai-consulting/terraform-aws-acf-scp",
-      "module_version"  = /*inject_version_start*/ "1.0.0" /*inject_version_end*/
+      "module_version"  = /*inject_version_start*/ "1.0.1" /*inject_version_end*/
     }
   )
 
