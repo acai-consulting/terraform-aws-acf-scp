@@ -2,11 +2,35 @@ import json
 import sys
 import boto3
 
-BOTO3_CLIENT = boto3.client('organizations')
-def get_ous(parent_ou_id, remaining_ou_path, recent_ou_path = "/root"):
+
+def _assume_remote_role(remote_role_arn):
+    try:
+        # Assumes the provided role in the auditing member account and returns a session
+        # Beginning the assume role process for account
+        sts_client = boto3.client('sts')
+
+        response = sts_client.assume_role(
+            RoleArn=remote_role_arn,
+            RoleSessionName='RemoteSession'
+        )
+
+        # Storing STS credentials
+        session = boto3.Session(
+            aws_access_key_id=response["Credentials"]["AccessKeyId"],
+            aws_secret_access_key=response["Credentials"]["SecretAccessKey"],
+            aws_session_token=response["Credentials"]["SessionToken"]
+        )
+        return session
+
+    except Exception as e:
+        print(f'Was not able to assume role {remote_role_arn}')
+        print(e)
+        return None
+
+def _get_ous(boto3_client, parent_ou_id, remaining_ou_path, recent_ou_path = "/root"):
     def get_ous_for_criteria(parent_id, criteria):
         found_ous = []
-        paginator = BOTO3_CLIENT.get_paginator('list_organizational_units_for_parent')
+        paginator = boto3_client.get_paginator('list_organizational_units_for_parent')
         for page in paginator.paginate(ParentId=parent_id):
             for ou in page['OrganizationalUnits']:
                 if ou['Name'] == criteria or criteria == "*":
@@ -26,30 +50,28 @@ def get_ous(parent_ou_id, remaining_ou_path, recent_ou_path = "/root"):
     if len(parts) > 1:
         rest_of_path = '/' + '/'.join(parts[1:])
         for result in found_ous:
-            results.extend(get_ous(result['id'], rest_of_path, f"{recent_ou_path}/{result['name']}" ))
+            results.extend(_get_ous(boto3_client, result['id'], rest_of_path, f"{recent_ou_path}/{result['name']}" ))
     else:
         results.extend(found_ous)
     return results
 
+
+
+
+
+
 external_root_ou_id = sys.argv[1] 
 ou_assignments = json.loads(sys.argv[2])
-"""
-external_root_ou_id = "r-s2bx"
-ou_assignments = {
-    "/root"                                     : ["top_level"],
-    "/root/SCP_CoreAccounts"                    : ["core_accounts"],
-    "/root/SCP_CoreAccounts/Management"         : ["deny_vpc"],
-    "/root/SCP_SandboxAccounts"                 : [],
-    "/root/SCP_WorkloadAccounts"                : ["workload"],
-    "/root/SCP_WorkloadAccounts/BusinessUnit_1" : ["workload_class1"],
-    "/root/SCP_WorkloadAccounts/BusinessUnit_2" : ["workload_class1"],
-    "/root/SCP_WorkloadAccounts/BusinessUnit_3" : ["workload_class2"],
-    "/root/SCP_WorkloadAccounts/*/NonProd"      : ["workload_prod"],
-    "/root/SCP_WorkloadAccounts/*/Prod"         : ["workload_non_prod"]
-}
-"""
 
-root_ou_id = BOTO3_CLIENT.list_roots()['Roots'][0]['Id']  # Assume single root
+# org_mgmt_role_arn provided?
+if len(sys.argv) > 3:  
+    session = _assume_remote_role(sys.argv[3])
+    boto3_client = session.client('organizations')
+
+else:
+    boto3_client = boto3.client('organizations')
+
+root_ou_id = boto3_client.list_roots()['Roots'][0]['Id']  # Assume single root
 if external_root_ou_id != root_ou_id:
     raise(Exception(f"Not in the correct AWS Org. Required: {external_root_ou_id} Found: {root_ou_id}"))
 
@@ -59,7 +81,7 @@ for path, scps in ou_assignments.items():
         ou_results[root_ou_id] = {'path':'/root', 'scps': scps}
     else:
         path = path.replace("/root", "", 1)
-        ous = get_ous(root_ou_id, path)
+        ous = _get_ous(boto3_client, root_ou_id, path)
 
         for ou in ous:
             if ou['id'] in ou_results:
@@ -68,3 +90,4 @@ for path, scps in ou_assignments.items():
                 ou_results[ou['id']] = {"path": ou['path'], "scps": scps}
 
 print(json.dumps({"result": json.dumps(ou_results)}))
+

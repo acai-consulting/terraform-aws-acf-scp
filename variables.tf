@@ -17,10 +17,16 @@ variable "scp_specifications" {
 variable "scp_assignments" {
   description = "The assignements of SCPs."
   type = object({
-    ou_assignments : map(list(string))      # key: ou-path, value: list of scp_ids to be assinged
-    account_assignments : map(list(string)) # key: account_id, value: list of scp_ids to be assinged
+    ou_assignments : optional(map(list(string)), {})      # key: ou-path, value: list of scp_ids to be assinged
+    account_assignments : optional(map(list(string)), {}) # key: account_id, value: list of scp_ids to be assinged
   })
   default = null
+}
+
+variable "org_mgmt_role_arn" {
+  description = "ARN to be assumed by the Python."
+  type        = string
+  default     = ""
 }
 
 variable "default_tags" {
