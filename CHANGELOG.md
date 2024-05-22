@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3](https://github.com/acai-consulting/terraform-aws-acf-scp/compare/1.0.2...1.0.3) (2024-05-22)
+
+
+### Bug Fixes
+
+* refactor python ([#4](https://github.com/acai-consulting/terraform-aws-acf-scp/issues/4)) ([e0f271f](https://github.com/acai-consulting/terraform-aws-acf-scp/commit/e0f271fb6b2be01177ebd6111e4bd7b0309490d8))
+
 ## [1.0.2](https://github.com/acai-consulting/terraform-aws-acf-scp/compare/1.0.1...1.0.2) (2024-05-17)
 
 
