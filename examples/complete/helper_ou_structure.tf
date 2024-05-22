@@ -56,7 +56,7 @@ locals {
 
 module "ou_structure" {
   #checkov:skip=CKV_TF_1
-  source               = "git::https://github.com/acai-consulting/terraform-aws-acf-org-ou-mgmt?ref=main"
+  source               = "git::https://github.com/acai-consulting/terraform-aws-acf-org-ou-mgmt?ref=1.1.1"
   organizational_units = local.organizational_units
   providers = {
     aws = aws.org_mgmt
