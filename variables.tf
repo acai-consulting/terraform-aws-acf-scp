@@ -23,8 +23,8 @@ variable "scp_assignments" {
   default = null
 }
 
-variable "org_mgmt_role_arn" {
-  description = "ARN to be assumed by the Python."
+variable "org_mgmt_reader_role_arn" {
+  description = "ARN to be assumed by the Python, to read the OU structure. Only required, if the provisioning pipeline is not in the context of the Org-Mgmt account."
   type        = string
   default     = ""
 }
