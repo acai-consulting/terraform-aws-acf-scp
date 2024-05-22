@@ -76,7 +76,7 @@ resource "aws_organizations_policy" "scp_policies" {
 resource "aws_organizations_policy_attachment" "ou_attachment" {
   for_each = merge([
     for ou_id, ou_info in local.ou_paths_with_id : {
-      for scp_name in ou_info.assignments : "${ou_info.path_name} <- ${scp_name}" => {
+      for scp_name in ou_info.assignments : " ${scp_name}" => {
         "ou_id"    = ou_id,
         "scp_name" = scp_name
       }
