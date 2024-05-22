@@ -6,8 +6,8 @@ terraform {
 
   required_providers {
     aws = {
-      source                = "hashicorp/aws"
-      version               = ">= 4.47"
+      source  = "hashicorp/aws"
+      version = ">= 4.47"
     }
   }
 }
@@ -42,10 +42,10 @@ locals {
 # ---------------------------------------------------------------------------------------------------------------------
 data "external" "get_ou_ids" {
   program = [
-    "python3", 
-    "${path.module}/python/get_ou_ids.py", 
-    local.root_ou_id, 
-    jsonencode(var.scp_assignments.ou_assignments), 
+    "python3",
+    "${path.module}/python/get_ou_ids.py",
+    local.root_ou_id,
+    jsonencode(var.scp_assignments.ou_assignments),
     var.org_mgmt_reader_role_arn
   ]
 }
