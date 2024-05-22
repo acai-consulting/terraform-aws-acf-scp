@@ -8,7 +8,6 @@ terraform {
     aws = {
       source                = "hashicorp/aws"
       version               = ">= 4.47"
-      configuration_aliases = []
     }
   }
 }
@@ -17,7 +16,6 @@ terraform {
 # ¦ DATA
 # ---------------------------------------------------------------------------------------------------------------------
 data "aws_organizations_organization" "organization" {}
-
 data "aws_organizations_organizational_units" "organization_inits" {
   parent_id = data.aws_organizations_organization.organization.roots[0].id
 }
@@ -35,7 +33,6 @@ locals {
       "module_version"  = /*inject_version_start*/ "1.0.2" /*inject_version_end*/
     }
   )
-
   root_ou_id = data.aws_organizations_organization.organization.roots[0].id
 }
 
@@ -44,7 +41,13 @@ locals {
 # ¦ DATA
 # ---------------------------------------------------------------------------------------------------------------------
 data "external" "get_ou_ids" {
-  program = ["python3", "${path.module}/python/get_ou_ids.py", local.root_ou_id, jsonencode(var.scp_assignments.ou_assignments), var.org_mgmt_role_arn]
+  program = [
+    "python3", 
+    "${path.module}/python/get_ou_ids.py", 
+    local.root_ou_id, 
+    jsonencode(var.scp_assignments.ou_assignments), 
+    var.org_mgmt_reader_role_arn
+  ]
 }
 
 locals {
@@ -73,7 +76,7 @@ resource "aws_organizations_policy" "scp_policies" {
 resource "aws_organizations_policy_attachment" "ou_attachment" {
   for_each = merge([
     for ou_id, ou_info in local.ou_paths_with_id : {
-      for scp_name in ou_info.scps : "${ou_info.path} <- ${scp_name}" => {
+      for scp_name in ou_info.assignments : "${ou_info.path_name} <- ${scp_name}" => {
         "ou_id"    = ou_id,
         "scp_name" = scp_name
       }
