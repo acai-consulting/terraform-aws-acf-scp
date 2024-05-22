@@ -33,6 +33,7 @@ locals {
       "module_version"  = /*inject_version_start*/ "1.0.2" /*inject_version_end*/
     }
   )
+  org_id     = data.aws_organizations_organization.organization.id
   root_ou_id = data.aws_organizations_organization.organization.roots[0].id
 }
 
@@ -44,6 +45,7 @@ data "external" "get_ou_ids" {
   program = [
     "python3",
     "${path.module}/python/get_ou_ids.py",
+    local.org_id,
     local.root_ou_id,
     jsonencode(var.scp_assignments.ou_assignments),
     var.org_mgmt_reader_role_arn
@@ -76,7 +78,7 @@ resource "aws_organizations_policy" "scp_policies" {
 resource "aws_organizations_policy_attachment" "ou_attachment" {
   for_each = merge([
     for ou_id, ou_info in local.ou_paths_with_id : {
-      for scp_name in ou_info.assignments : " ${scp_name}" => {
+      for scp_name in ou_info.assignments : "${ou_info.path_name} <- ${scp_name}" => {
         "ou_id"    = ou_id,
         "scp_name" = scp_name
       }
