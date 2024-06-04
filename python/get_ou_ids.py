@@ -16,10 +16,10 @@ def main():
     session = _assume_remote_role(role_arn) if role_arn else boto3.Session()
 
     boto3_config_settings = boto3_config(
-        retries = dict(
-            max_attempts = 10
-        )
-    )    
+        retries = {
+            'max_attempts' : 10, 
+            'mode': 'standard' 
+    })
     boto3_client = session.client('organizations', config=boto3_config_settings)
     
     found_org_id = boto3_client.describe_organization()['Organization']['Id'] 
