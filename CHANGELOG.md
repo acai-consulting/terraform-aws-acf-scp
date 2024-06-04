@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4](https://github.com/acai-consulting/terraform-aws-acf-scp/compare/1.0.3...1.0.4) (2024-06-04)
+
+
+### Bug Fixes
+
+* boto3 exponential backoff ([#5](https://github.com/acai-consulting/terraform-aws-acf-scp/issues/5)) ([9dfd2e8](https://github.com/acai-consulting/terraform-aws-acf-scp/commit/9dfd2e82254ee5e0f4b7da687689fc927ffde998))
+
 ## [1.0.3](https://github.com/acai-consulting/terraform-aws-acf-scp/compare/1.0.2...1.0.3) (2024-05-22)
 
 
