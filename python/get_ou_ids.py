@@ -1,6 +1,8 @@
 import json
 import sys
 import boto3
+import botocore
+from botocore.config import Config as boto3_config
 
 
 def main():
@@ -12,7 +14,13 @@ def main():
     role_arn = sys.argv[3] if len(sys.argv) > 4 else None
     
     session = _assume_remote_role(role_arn) if role_arn else boto3.Session()
-    boto3_client = session.client('organizations')
+
+    boto3_config_settings = boto3_config(
+        retries = dict(
+            max_attempts = 10
+        )
+    )    
+    boto3_client = session.client('organizations', config=boto3_config_settings)
     
     found_org_id = boto3_client.describe_organization()['Organization']['Id'] 
     found_root_ou_id = boto3_client.list_roots()['Roots'][0]['Id']  # Assume single root
