@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5](https://github.com/acai-consulting/terraform-aws-acf-scp/compare/1.0.4...1.0.5) (2024-09-09)
+
+
+### Bug Fixes
+
+* update readme, rename folder ([#6](https://github.com/acai-consulting/terraform-aws-acf-scp/issues/6)) ([69757fe](https://github.com/acai-consulting/terraform-aws-acf-scp/commit/69757fe043e71d34410d819470b616c510f8d9fa))
+
 ## [1.0.4](https://github.com/acai-consulting/terraform-aws-acf-scp/compare/1.0.3...1.0.4) (2024-06-04)
 
 
