@@ -7,11 +7,10 @@
 
 <!-- SHIELDS -->
 [![Maintained by acai.gmbh][acai-shield]][acai-url]
-![module-version-shield]
+[![module-version-shield]][module-release-url]
 ![terraform-version-shield]
 ![trivy-shield]
 ![checkov-shield]
-[![Latest Release][release-shield]][release-url]
 
 <!-- DESCRIPTION -->
 [Terraform][terraform-url] module to provision and assign Service Control Policies (SCPs).
@@ -217,10 +216,9 @@ See [LICENSE][license-url] for full details.
 [acai-url]: https://acai.gmbh
 [acai-shield]: https://img.shields.io/badge/maintained_by-acai.gmbh-CB224B?style=flat
 [module-version-shield]: https://img.shields.io/badge/module_version-1.0.4-CB224B?style=flat
+[module-release-url]: https://github.com/acai-consulting/terraform-aws-acf-scp/releases
 [terraform-version-shield]: https://img.shields.io/badge/tf-%3E%3D1.3.10-blue.svg?style=flat&color=blueviolet
 [trivy-shield]: https://img.shields.io/badge/trivy-passed-green
 [checkov-shield]: https://img.shields.io/badge/checkov-passed-green
-[release-shield]: https://img.shields.io/github/v/release/acai-consulting/terraform-aws-acf-scp?style=flat&color=success
-[release-url]: https://github.com/acai-consulting/terraform-aws-acf-scp/releases
 [license-url]: https://github.com/acai-consulting/terraform-aws-acf-scp/tree/main/LICENSE.md
 [terraform-url]: https://www.terraform.io
