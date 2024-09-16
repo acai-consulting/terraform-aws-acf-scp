@@ -11,7 +11,7 @@ def main():
     expected_org_id = sys.argv[1]
     expected_root_ou_id = sys.argv[2]
     ou_assignments = json.loads(sys.argv[3])
-    role_arn = sys.argv[3] if len(sys.argv) > 4 else None
+    role_arn = sys.argv[4] if len(sys.argv) > 4 else None
     
     session = _assume_remote_role(role_arn) if role_arn else boto3.Session()
 
