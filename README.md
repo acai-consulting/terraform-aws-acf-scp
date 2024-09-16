@@ -131,7 +131,7 @@ locals {
 }
 
 module "scp_statements" {
-  source = "./scp_statements"
+  source = "git::https://github.com/acai-consulting/terraform-aws-acf-scp-statements.git?ref=1.0.0"
 }
 
 module "scp_management" {
