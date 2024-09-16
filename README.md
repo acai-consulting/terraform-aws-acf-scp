@@ -14,6 +14,7 @@
 
 <!-- DESCRIPTION -->
 [Terraform][terraform-url] module to provision and assign Service Control Policies (SCPs).
+For SCP staments have a look at this repository: [terraform-aws-acf-scp-statements](https://github.com/acai-consulting/terraform-aws-acf-scp-statements)
 
 <!-- FEATURES -->
 ## Note
@@ -134,7 +135,7 @@ module "scp_statements" {
 }
 
 module "scp_management" {
-  source = "../../"
+  source = "git::https://github.com/acai-consulting/terraform-aws-acf-scp.git?ref=1.0.5"
 
   scp_statements     = module.scp_statements.scp_statements
   scp_specifications = local.scp_specifications
