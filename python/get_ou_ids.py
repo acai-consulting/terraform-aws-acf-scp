@@ -11,24 +11,28 @@ def main():
     expected_org_id = sys.argv[1]
     expected_root_ou_id = sys.argv[2]
     ou_assignments = json.loads(sys.argv[3])
-    role_arn = sys.argv[3] if len(sys.argv) > 4 else None
+    role_arn = sys.argv[4] if len(sys.argv) > 4 else None
     
     session = _assume_remote_role(role_arn) if role_arn else boto3.Session()
 
-    boto3_config_settings = boto3_config(
-        retries = {
-            'max_attempts' : 10, 
-            'mode': 'standard' 
-    })
-    boto3_client = session.client('organizations', config=boto3_config_settings)
-    
-    found_org_id = boto3_client.describe_organization()['Organization']['Id'] 
-    found_root_ou_id = boto3_client.list_roots()['Roots'][0]['Id']  # Assume single root
-    if (expected_org_id != found_org_id or expected_root_ou_id != found_root_ou_id):
-        raise(Exception(f"Not in the correct AWS Org. Required: {expected_org_id}/{expected_root_ou_id} Found: {found_org_id}/{found_root_ou_id}"))
+    if session == None:
+        raise Exception(f"Was not able to assume role {role_arn}")
+        
+    else:
+        boto3_config_settings = boto3_config(
+            retries = {
+                'max_attempts' : 10, 
+                'mode': 'standard' 
+        })
+        boto3_client = session.client('organizations', config=boto3_config_settings)
+        
+        found_org_id = boto3_client.describe_organization()['Organization']['Id'] 
+        found_root_ou_id = boto3_client.list_roots()['Roots'][0]['Id']  # Assume single root
+        if (expected_org_id != found_org_id or expected_root_ou_id != found_root_ou_id):
+            raise(Exception(f"Not in the correct AWS Org. Required: {expected_org_id}/{expected_root_ou_id} Found: {found_org_id}/{found_root_ou_id}"))
 
-    ou_results = _process_ou_assignments(boto3_client, found_org_id, found_root_ou_id, ou_assignments)
-    print(json.dumps({"result": json.dumps(ou_results)}))
+        ou_results = _process_ou_assignments(boto3_client, found_org_id, found_root_ou_id, ou_assignments)
+        print(json.dumps({"result": json.dumps(ou_results)}))
 
 def _process_ou_assignments(boto3_client, org_id, root_ou_id, ou_assignments):
     ou_results = {}
@@ -98,8 +102,6 @@ def _assume_remote_role(remote_role_arn):
         return session
 
     except Exception as e:
-        print(f'Was not able to assume role {remote_role_arn}')
-        print(e)
         return None
 
 

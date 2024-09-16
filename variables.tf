@@ -29,7 +29,7 @@ variable "org_mgmt_reader_role_arn" {
   default     = ""
 }
 
-variable "default_tags" {
+variable "resource_tags" {
   description = "A map of default tags to assign to the SCPs."
   type        = map(string)
   default     = {}

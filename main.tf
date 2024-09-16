@@ -24,8 +24,8 @@ data "aws_organizations_organizational_units" "organization_inits" {
 # ¦ LOCALS
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  module_tags = merge(
-    var.default_tags,
+  resource_tags = merge(
+    var.resource_tags,
     {
       "module_provider" = "ACAI GmbH",
       "module_name"     = "terraform-aws-acf-scp",
@@ -71,7 +71,7 @@ resource "aws_organizations_policy" "scp_policies" {
   name        = each.value.policy_name
   description = each.value.description
   content     = jsonencode(jsondecode(data.aws_iam_policy_document.scp_policies[each.key].json))
-  tags        = merge(local.module_tags, each.value.tags)
+  tags        = merge(local.resource_tags, each.value.tags)
 }
 
 # Attach to Organizational Units
