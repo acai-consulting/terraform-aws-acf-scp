@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.6](https://github.com/acai-consulting/terraform-aws-acf-scp/compare/1.0.5...1.0.6) (2024-09-16)
+
+
+### Bug Fixes
+
+* inline Lambda ([#7](https://github.com/acai-consulting/terraform-aws-acf-scp/issues/7)) ([0386ba2](https://github.com/acai-consulting/terraform-aws-acf-scp/commit/0386ba2d8aa986597723c3a697a098bdf8fbebf4))
+
 ## [1.0.5](https://github.com/acai-consulting/terraform-aws-acf-scp/compare/1.0.4...1.0.5) (2024-09-09)
 
 
