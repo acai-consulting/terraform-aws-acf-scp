@@ -16,7 +16,7 @@ def main():
     session = _assume_remote_role(role_arn) if role_arn else boto3.Session()
 
     if session == None:
-        print(f"Was not able to assume role {role_arn}")
+        print(json.dumps({"error": f"Was not able to assume role {role_arn}"}))
         
     else:
         boto3_config_settings = boto3_config(
@@ -102,8 +102,6 @@ def _assume_remote_role(remote_role_arn):
         return session
 
     except Exception as e:
-        print(f'Was not able to assume role {remote_role_arn}')
-        print(e)
         return None
 
 
